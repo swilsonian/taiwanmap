@@ -1,43 +1,14 @@
 # Historical maps of Taiwan
 
-Overlaying the [Formosa City Plans maps][cityplans], US Army Map Service
-maps from 1944-1945 on the current terrain.
+Overlaying various historical maps on the current terrain.
 
 ## Maps
 
-+ [x] Beigang / Hokko
-+ [x] Changhua / Shoka
-+ [x] Chiayi / Kagi
-+ [x] Danshui / Tansui
-+ [x] Donggang / Toko
-+ [x] Fengshan / Hozan
-+ [x] Gangshan / Okayama
-+ [x] Hsinchu / Shinchiku
-+ [x] Hualien / Karenko
-+ [x] Jiadong / Kato
-+ [x] Kaohsiung / Takao
-+ [x] Keelung / Kiirun
-+ [x] Lukang / Rokko
-+ [x] Luodong / Rato
-+ [x] Penghu / Mako
-+ [x] Pingtung / Heito
-+ [x] Su'ao / Suo
-+ [x] Taichung / Taichu
-+ [x] Taitung / Taito
-+ [x] Tainan / Tainan
-+ [x] Taipei / Taihoku-Matsuyama
-+ [x] Taoyuan / Toen
-+ [x] Xiluo / Seira
-+ [x] Yilan / Giran
-+ [x] Zhunan / Chikunan
-+ [x] Zuoying / Toshien
+
++ [x] Taipei / 1960's map from USTDC
+
 
 ## License
-
-The maps included are from the [Perry-Castañeda Library Map Collection][pcl],
-and Courtesy of the University of Texas Libraries, The University of Texas at Austin.
-They are under public domain according to the [Library Web Material Usage Statement][mapcopy].
-I'm greatful for their release!
 
 The overlay display code is released under the MIT License:
 
@@ -62,6 +33,3 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-[cityplans]: http://www.lib.utexas.edu/maps/ams/formosa_city_plans/
-[mapcopy]: http://www.lib.utexas.edu/usage_statement.html "Library Web Material Usage Statement"
-[pcl]: http://www.lib.utexas.edu/maps/ "Perry-Castañeda Library Map Collection"
