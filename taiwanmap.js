@@ -108,9 +108,7 @@ var toggleVisibility = function() {
     if (historicalOverlay.getMap()) {
 	historicalOverlay.setMap(null);
     } else {
-	
-    historicalOverlay.setMap(map);
-
+	historicalOverlay.setMap(map);
     }
 };
 
@@ -121,5 +119,4 @@ var updateOpacity = function() {
 
 $(document).ready(function() {
     opacitySlider = $("#opacity");
-
 });
