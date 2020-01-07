@@ -86,7 +86,7 @@ function initMap() {
     });
 
     // Set map list dropdown
-    var maplist = $("#panel > select");
+    var maplist = $("#location");
     $.each(mapData, function(key, value) {
         maplist.append($("<option></option>").attr("value",key).text(value['name'] + " / " + key));
     });
@@ -108,7 +108,9 @@ var toggleVisibility = function() {
     if (historicalOverlay.getMap()) {
 	historicalOverlay.setMap(null);
     } else {
-	historicalOverlay.setMap(map);
+	
+    historicalOverlay.setMap(map);
+
     }
 };
 
@@ -119,4 +121,5 @@ var updateOpacity = function() {
 
 $(document).ready(function() {
     opacitySlider = $("#opacity");
+
 });
