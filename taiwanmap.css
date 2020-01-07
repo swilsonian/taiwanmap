@@ -8,22 +8,22 @@ html, body {
     height: 100%;
 }
 
-#panel {
+/*#panel {
     background-color: #fff;
     padding: 5px;
-    /*border: 1px solid #999;*/
+
     text-align: center;
-}
-/*#panel {
+}*/
+#panel {
     position: absolute;
-    top: 10px;
-    left: 20%;
+    bottom: 0px;
+    left: 0px;
     z-index: 5;
     background-color: #fff;
     padding: 5px;
     border: 1px solid #999;
     text-align: center;
-}*/
+}
 
 /**
  * Provide the following styles for both ID and class, where ID represents an
