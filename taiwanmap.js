@@ -26,7 +26,7 @@ var getParameters = function() {
     };
 };
 
-$.getJSON( "taiwanmap.json", function( data ) {
+$.getJSON( "./taiwanmap.json", function( data ) {
     console.log(data);
     mapData = data;
     initMap();
