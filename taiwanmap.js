@@ -471,7 +471,7 @@ var updateOpacity = function() {
 
 var overlaySlider;
 var updateRotate = function() {    
-    overlay.updateRotate( overlaySlider.val()/10 );
+    overlay.updateRotate( overlaySlider.val()/100 );
 };
 
 
