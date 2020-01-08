@@ -22,7 +22,7 @@
 <!-- Add an input button to initiate the toggle method on the overlay. -->
 
 <div id="panel" >
-      <div  class="col-md-6 col-sm">
+      <div  class="col-md-3 col-sm">
         <select id="location"></select>
       </div>
       <div  class="col-md">
@@ -30,8 +30,14 @@
       </div>
       <div  class="col-md">
         <label for="opacity">Opacity:</label>
-        <input type="range" id="opacity" name="opacity" min="0" max="10" value="8" onchange="updateOpacity()"></input>
+        <input type="range" id="opacity" name="opacity" min="0" max="10" value="8" oninput="updateOpacity()"></input>
       </div>
+      <div  class="col-md">
+        <label for="overlayslider">Rotation:</label>
+        <input type="range" min="0" max="360" value="0" id="overlayslider" oninput="updateRotate()"></input>
+      </div>
+
+          
 
       <span class="d-none d-md-block col-md">Creator <a href="https://gergely.imreh.net/">Gergely Imreh</a></span>
       <span class="d-none d-md-block col-md">Modifier <a href="https://github.com/swilsonian/">Sean Wilson</a></span>
