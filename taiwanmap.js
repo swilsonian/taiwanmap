@@ -337,7 +337,7 @@ function initMap() {
     //     west:location['bounds']['west']
     // };
 
-    var mapImage = "/" + mapsLocation + location['map'];
+    var mapImage = "./" + mapsLocation + location['map'];
 
     var angle = location['rotation'];
 
