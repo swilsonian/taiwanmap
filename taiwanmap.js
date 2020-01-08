@@ -2,6 +2,8 @@ var overlay,
     mapData,
     params = {};
 
+var canMoveOverlay = false;
+
 /* Store maps in subdirectory */
 var mapsLocation = 'maps/';
 
@@ -62,13 +64,36 @@ function USGSOverlay(bounds, angle, image, map) {
 
 }
 
+USGSOverlay.prototype.setDrag =  function(value) {
+        // Add the element to the "overlayLayer" pane.
+    var panes = this.getPanes();
+    // panes.overlayLayer.appendChild(this.div_);
+
+    if (this.div_.parentNode && this.div_.parentNode != null) {
+        this.div_.parentNode.removeChild(this.div_);
+    }
+
+    
+    console.log("setDrag:" + value);
+    if (value) {
+        panes.floatPane.appendChild(this.div_);
+    }
+    else {
+        panes.overlayLayer.appendChild(this.div_);
+    }
+    
+
+    this.draw();
+}
+
+
 USGSOverlay.prototype.setOpacity =  function(value) {
     console.log(value);
     this.div_.style.opacity = value;
 }
 
 USGSOverlay.prototype.onRotate =  function() {
-    this.div_.style.transform = 'rotate(' + (360 - this.value) + 'deg)';
+    this.div_.style.transform = 'rotate(' + ( 360 - this.value) + 'deg)';
     console.log((360 - this.value));
 };
 
@@ -87,39 +112,146 @@ USGSOverlay.prototype.onAdd = function() {
 
     console.log("ON ADD");
 
+    
     if (this.div_ == null) {
+
     var div = document.createElement('div');
+
+
     div.setAttribute("id", "theoverlayyo");
     div.style.borderStyle = 'none';
     div.style.borderWidth = '0px';
     div.style.position = 'absolute';
     div.style.opacity = 0.8;
-    div.style.transform = 'rotate(' + (360 - this.angle_) + 'deg)';
+    //div.style.transform = 'rotate(' + (360 - this.angle_) + 'deg)';
+    
+    //div.set('draggable',false);
 
-    // document.getElementById('overlayslider').addEventListener("input", function() {
-    //   div.style.transform = 'rotate(' + this.value + 'deg)';
-    // });
-
-    // Create the img element and attach it to the div.
     var img = document.createElement('img');
     img.src = this.image_;
     img.style.width = '100%';
     img.style.height = '100%';
     img.style.position = 'absolute';
     div.appendChild(img);
-
-
     this.div_ = div;
     }
+
+    this.div_.draggable=false;
+    
+    that=this;
+
+      // google.maps.event.addDomListener(this.map_.getDiv(),
+      //                                  'mouseleave',
+      //                                   function(){
+      //     google.maps.event.trigger(this.div_,'mouseup');
+      //   }
+      // );
+      
+
+  
+      google.maps.event.addDomListener(this.div_,
+                                       'mousedown',
+                                   function(e){
+
+
+        console.log(e);
+        this.style.cursor='move';
+        that.map.set('draggable',false);
+        that.map_.draggable = false;
+        that.origin_ = e;
+
+        that.moveHandler  = google.maps.event.addDomListener(that.map_.getDiv(),
+                                                             'mousemove',
+                                                             function(e){
+
+  
+            var origin = that.origin_,
+              left   = origin.clientX-e.clientX,
+              top    = origin.clientY-e.clientY;
+
+              // if (canMoveOverlay == false) {
+              //   left = 0;
+              //   top = 0;
+              // }
+
+              posNE    = that.getProjection()
+                        .fromLatLngToDivPixel(that.bounds_.getNorthEast()),
+              posSW    = that.getProjection()
+                        .fromLatLngToDivPixel(that.bounds_.getSouthWest()),
+
+              // left = posNE.x-e.clientX,
+              // top = 
+
+              newPosNE = new google.maps.Point(posNE.x-left, posNE.y-top),
+              newPosSW = new google.maps.Point(posSW.x-left, posSW.y-top),
+              latLngNE = that.getProjection()
+                        .fromDivPixelToLatLng(newPosNE),
+              latLngSW = that.getProjection()
+                        .fromDivPixelToLatLng(newPosSW);                        
+              
+            // console.log("old:" + posNE + ", " + posSW);
+            // console.log("new:" + newPosNE + ", " + newPosSW);
+
+
+              that.bounds_ = new google.maps.LatLngBounds( latLngSW, latLngNE ); 
+
+              that.origin_ = e; 
+              that.draw();
+          });
+    
+    
+        }
+     );
+      
+      google.maps.event.addDomListener(this.div_,'mouseup',function(){
+
+        that.map.set('draggable',true);
+        that.map_.draggable=true;
+        this.style.cursor='default';
+        // google.maps.event.clearListeners(that, 'mousemove');
+        google.maps.event.removeListener(that.moveHandler);
+      });
+       
+  
+   
+
+    // document.getElementById('overlayslider').addEventListener("input", function() {
+    //   div.style.transform = 'rotate(' + this.value + 'deg)';
+    // });
+
+    // Create the img element and attach it to the div.
+    // var img = document.createElement('img');
+    // img.src = this.image_;
+    // img.style.width = '100%';
+    // img.style.height = '100%';
+    // img.style.position = 'absolute';
+    // div.appendChild(img);
+
+
+    // this.div_ = div;
+    // }
     
 
     // Add the element to the "overlayLayer" pane.
-    var panes = this.getPanes();
-    panes.overlayLayer.appendChild(this.div_);
+    // var panes = this.getPanes();
+    // panes.overlayLayer.appendChild(this.div_);
+    
+    this.setDrag(false); 
+    // this.getPanes().floatPane.appendChild(this.div_);   
 
     console.log("Finished loading!");
     $("#loading-spinner").hide();
 };
+
+
+
+
+// USGSOverlay.prototype.draw = function() {
+//   var div = this.div_;
+//   var pos = this.getProjection().fromLatLngToDivPixel(this.bounds_.getNorthEast());
+//   div.style.left = pos.x + 'px';
+//   div.style.top = pos.y + 'px';
+// };
 
 USGSOverlay.prototype.draw = function() {
 
@@ -238,11 +370,12 @@ function initMap() {
               lng: position.coords.longitude
             };
 
-            myPosMarker = new google.maps.Marker({position:pos, map:map});
-            // infoWindow.setPosition(pos);
-            // infoWindow.setContent('Your Location.');
+            // myPosMarker = new google.maps.Marker({position:pos, map:map, zIndex: 10000 });
+            infoWindow = new google.maps.InfoWindow;
 
-            // infoWindow.open(map);
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('You');
+            infoWindow.open(map);
             // map.setCenter(pos);
           }, function() {
             handleLocationError(true, map.getCenter());
@@ -254,6 +387,7 @@ function initMap() {
 
 
     overlay = new USGSOverlay(imageBounds, angle, mapImage, map);  
+
 }
 
 function handleLocationError(browserHasGeolocation, pos) {
@@ -280,8 +414,9 @@ var updateOpacity = function() {
 
 var overlaySlider;
 var updateRotate = function() {    
-    overlay.updateRotate( overlaySlider.val() );
+    overlay.updateRotate( overlaySlider.val()/10 );
 };
+
 
 
       // This example creates a custom overlay called USGSOverlay, containing
@@ -298,7 +433,20 @@ var updateRotate = function() {
  // google.maps.event.addDomListener(window, 'load', initMap);      
 
 
+
 $(document).ready(function() {
     opacitySlider = $("#opacity");
     overlaySlider = $("#overlayslider");
+    moveButton = $("#movebutton");
+
+    moveButton.change(function(event) {
+        console.log("!!!!" +moveButton.checked);
+      if (event.target.checked) {
+        overlay.setDrag(true);
+        canMoveOverlay = true;
+      } else {
+        overlay.setDrag(false);
+        canMoveOverlay = false;
+      }
+  })
 });

@@ -32,6 +32,8 @@ html, body {
  * name.
  */
 
+
+
 #panel, .panel {
     font-family: 'Roboto','sans-serif';
     line-height: 30px;
@@ -52,6 +54,10 @@ html, body {
 
 label[for=opacity] {
   margin-left: 10px;
+}
+
+#panel input, #panel select {
+  margin: 10px;
 }
 
 /* Loading spinner */
