@@ -113,14 +113,14 @@ USGSOverlay.prototype.setOpacity =  function(value) {
 }
 
 USGSOverlay.prototype.onRotate =  function() {
-    this.div_.style.transform = 'rotate(' + ( 360 - this.value) + 'deg)';
-    console.log((360 - this.value));
+    this.div_.style.transform = 'rotate(' + (  this.value) + 'deg)';
+    console.log(( this.value));
 };
 
 USGSOverlay.prototype.updateRotate =  function(value) {
     console.log("updateRotate");
-    this.div_.style.transform = 'rotate(' + (360 - value) + 'deg)';
-    console.log((360 - value));
+    this.div_.style.transform = 'rotate(' + ( value) + 'deg)';
+    console.log(( value));
 };
 
 
@@ -471,7 +471,7 @@ var updateOpacity = function() {
 
 var overlaySlider;
 var updateRotate = function() {    
-    overlay.updateRotate( overlaySlider.val()/100 );
+    overlay.updateRotate( overlaySlider.val()/10 );
 };
 
 
