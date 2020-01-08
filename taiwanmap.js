@@ -7,6 +7,23 @@ var canMoveOverlay = false;
 /* Store maps in subdirectory */
 var mapsLocation = 'maps/';
 
+var canHover = true;
+var eventnames = [];
+eventnames["up"] = "mouseup";
+eventnames["down"] = "mousedown";
+eventnames["move"] = "mousemove";
+
+if(window.matchMedia("(any-hover: none)").matches) {
+    canHover = false;
+    console.log("No hover!")
+    eventnames["up"] = "touchend";
+    eventnames["down"] = "touchstart";
+    eventnames["move"] = "touchmove";
+}
+else {
+    console.log("Can hover!")   
+}
+
 var getParameters = function() {
     var query,
         vars;
@@ -150,7 +167,7 @@ USGSOverlay.prototype.onAdd = function() {
 
   
       google.maps.event.addDomListener(this.div_,
-                                       'mousedown',
+                                        eventnames["down"],
                                    function(e){
 
 
@@ -161,7 +178,7 @@ USGSOverlay.prototype.onAdd = function() {
         that.origin_ = e;
 
         that.moveHandler  = google.maps.event.addDomListener(that.map_.getDiv(),
-                                                             'mousemove',
+                                                             eventnames["move"],
                                                              function(e){
 
   
@@ -203,7 +220,7 @@ USGSOverlay.prototype.onAdd = function() {
         }
      );
       
-      google.maps.event.addDomListener(this.div_,'mouseup',function(){
+      google.maps.event.addDomListener(this.div_,  eventnames["up"], function(){
 
         that.map.set('draggable',true);
         that.map_.draggable=true;
