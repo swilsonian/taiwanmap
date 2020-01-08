@@ -19,6 +19,9 @@ if(window.matchMedia("(any-hover: none)").matches) {
     eventnames["up"] = "touchend";
     eventnames["down"] = "touchstart";
     eventnames["move"] = "touchmove";
+    // eventnames["up"] = "dragstart";
+    // eventnames["down"] = "dragend";
+    // eventnames["move"] = "dragmove";
 }
 else {
     console.log("Can hover!")   
@@ -170,8 +173,9 @@ USGSOverlay.prototype.onAdd = function() {
                                         eventnames["down"],
                                    function(e){
 
-
-        console.log(e);
+        // console.log("Event: " + eventnames["down"]);
+                    
+        
         this.style.cursor='move';
         that.map.set('draggable',false);
         that.map_.draggable = false;
@@ -180,11 +184,45 @@ USGSOverlay.prototype.onAdd = function() {
         that.moveHandler  = google.maps.event.addDomListener(that.map_.getDiv(),
                                                              eventnames["move"],
                                                              function(e){
+            console.log("Event: " + eventnames["move"]);
+   
 
-  
-            var origin = that.origin_,
-              left   = origin.clientX-e.clientX,
-              top    = origin.clientY-e.clientY;
+            let eX, eY;
+
+            if(e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
+                var touch = e.touches[0] || e.changedTouches[0];
+                eX = touch.pageX;
+                eY = touch.pageY;
+            } else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
+                eX = e.clientX;
+                eY = e.clientY;
+            }
+
+            console.log("eX " + eX);             
+            console.log("eY " + eY);
+
+            var origin = that.origin_;
+
+            let originX, originY;
+
+          if(origin.type == 'touchstart' || origin.type == 'touchmove' || origin.type == 'touchend' || origin.type == 'touchcancel'){
+                var touch = origin.touches[0] || origin.changedTouches[0];
+                originX = touch.pageX;
+                originY = touch.pageY;
+            } else if (origin.type == 'mousedown' || origin.type == 'mouseup' || origin.type == 'mousemove' || origin.type == 'mouseover'|| origin.type=='mouseout' || origin.type=='mouseenter' || origin.type=='mouseleave') {
+                originX = origin.clientX;
+                originY = origin.clientY;
+            }
+
+            console.log( originX);             
+            console.log( originY);
+
+
+            var  left   = originX-eX;
+            var   top    = originY-eY;
+
+            console.log("left" + left);             
+            console.log("top" + top); 
 
               // if (canMoveOverlay == false) {
               //   left = 0;
@@ -206,8 +244,8 @@ USGSOverlay.prototype.onAdd = function() {
               latLngSW = that.getProjection()
                         .fromDivPixelToLatLng(newPosSW);                        
               
-            // console.log("old:" + posNE + ", " + posSW);
-            // console.log("new:" + newPosNE + ", " + newPosSW);
+            console.log("old:" + posNE + ", " + posSW);
+            console.log("new:" + newPosNE + ", " + newPosSW);
 
 
               that.bounds_ = new google.maps.LatLngBounds( latLngSW, latLngNE ); 
@@ -221,6 +259,8 @@ USGSOverlay.prototype.onAdd = function() {
      );
       
       google.maps.event.addDomListener(this.div_,  eventnames["up"], function(){
+
+        console.log("Event: " + eventnames["up"]);
 
         that.map.set('draggable',true);
         that.map_.draggable=true;
