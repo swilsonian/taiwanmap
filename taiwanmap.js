@@ -71,7 +71,7 @@ USGSOverlay.prototype.setDrag =  function(value) {
 
     if (this.div_.parentNode && this.div_.parentNode != null) {
         this.div_.parentNode.removeChild(this.div_);
-    }
+    }  
 
     
     console.log("setDrag:" + value);
