@@ -128,6 +128,9 @@ USGSOverlay.prototype.updateRotate =  function(value) {
 * onAdd is called when the map's panes are ready and the overlay has been
 * added to the map.
 */
+
+var moveHandler;
+
 USGSOverlay.prototype.onAdd = function() {
 
     console.log("ON ADD");
@@ -160,12 +163,12 @@ USGSOverlay.prototype.onAdd = function() {
     
     that=this;
 
-      // google.maps.event.addDomListener(this.map_.getDiv(),
-      //                                  'mouseleave',
-      //                                   function(){
-      //     google.maps.event.trigger(this.div_,'mouseup');
-      //   }
-      // );
+      google.maps.event.addDomListener(this.map_.getDiv(),
+                                       'mouseleave',
+                                        function(){
+          google.maps.event.trigger(this.div_,'mouseup');
+        }
+      );
       
 
   
@@ -253,20 +256,32 @@ USGSOverlay.prototype.onAdd = function() {
               that.origin_ = e; 
               that.draw();
           });
-    
+          
+          moveHandler = that.moveHandler;
     
         }
      );
       
       google.maps.event.addDomListener(this.div_,  eventnames["up"], function(){
 
-        console.log("Event: " + eventnames["up"]);
+        console.log("Event: PICTURE " + eventnames["up"]);
 
         that.map.set('draggable',true);
         that.map_.draggable=true;
         this.style.cursor='default';
         // google.maps.event.clearListeners(that, 'mousemove');
-        google.maps.event.removeListener(that.moveHandler);
+        google.maps.event.removeListener(that.moveHandler);//that.moveHandler);
+      });
+
+      google.maps.event.addDomListener(map.getDiv(),  eventnames["up"], function(){
+
+        console.log("Event: MAP " + eventnames["up"]);
+
+        that.map.set('draggable',true);
+        that.map_.draggable=true;
+        this.style.cursor='default';
+        // google.maps.event.clearListeners(that, 'mousemove');
+        google.maps.event.removeListener(moveHandler);//that.moveHandler);
       });
        
   
@@ -489,6 +504,13 @@ var updateRotate = function() {
       
  // google.maps.event.addDomListener(window, 'load', initMap);      
 
+
+function cancelMapMove() {
+    // div.gmnoprint
+    // button.gm-control-active
+
+    map.getDiv().dispatchEvent(new Event(eventnames["up"]));
+}
 
 
 $(document).ready(function() {
