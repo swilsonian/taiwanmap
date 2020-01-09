@@ -388,6 +388,12 @@ function initMap() {
         });
     };
     
+    map.getDiv().oncontextmenu = function(event) {
+         event.preventDefault();
+         event.stopPropagation();
+         return false;
+    };
+
     console.log("BOUNDS");
     console.log(location);
     var imageBounds = new google.maps.LatLngBounds(            
@@ -521,13 +527,22 @@ function cancelMapMove() {
 
 
 function preventLongPressMenu(nodes) {
-  for(var i=0; i<nodes.length; i++){
-     nodes[i].ontouchstart = absorbEvent_;
-     nodes[i].ontouchmove = absorbEvent_;
-     nodes[i].ontouchend = absorbEvent_;
-     nodes[i].ontouchcancel = absorbEvent_;
-  }
+//   for(var i=0; i<nodes.length; i++){
+//      nodes[i].ontouchstart = absorbEvent_;
+//      nodes[i].ontouchmove = absorbEvent_;
+//      nodes[i].ontouchend = absorbEvent_;
+//      nodes[i].ontouchcancel = absorbEvent_;
+//   }
 }
+
+
+// document.getElementById('yourElement').oncontextmenu = function(event) {
+//     event.preventDefault();
+//     event.stopPropagation(); // not necessary in my case, could leave in case stopImmediateProp isn't available? 
+//     event.stopImmediatePropagation();
+//     return false;
+// };
+
 
 
 
