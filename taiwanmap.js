@@ -119,6 +119,7 @@ USGSOverlay.prototype.onRotate =  function() {
 
 USGSOverlay.prototype.updateRotate =  function(value) {
     console.log("updateRotate");
+    console.log(value);
     this.div_.style.transform = 'rotate(' + ( value) + 'deg)';
     console.log(( value));
 };
@@ -179,12 +180,12 @@ USGSOverlay.prototype.onAdd = function() {
     
     that=this;
 
-      google.maps.event.addDomListener(this.map_.getDiv(),
-                                       'mouseleave',
-                                        function(){
-          google.maps.event.trigger(this.div_,'mouseup');
-        }
-      );
+      // google.maps.event.addDomListener(this.map_.getDiv(),
+      //                                  'mouseleave',
+      //                                   function(){
+      //     google.maps.event.trigger(this.div_,'mouseup');
+      //   }
+      // );
       
 
   
@@ -537,15 +538,22 @@ function cancelMapMove() {
 
 
 
+
 function preventLongPressMenu(nodes) {
-//   for(var i=0; i<nodes.length; i++){
-//      nodes[i].ontouchstart = absorbEvent_;
-//      nodes[i].ontouchmove = absorbEvent_;
-//      nodes[i].ontouchend = absorbEvent_;
-//      nodes[i].ontouchcancel = absorbEvent_;
-//   }
+  for(var i=0; i<nodes.length; i++){
+     nodes[i].ontouchstart = no;
+     nodes[i].ontouchmove = no;
+     nodes[i].ontouchend = no;
+     nodes[i].ontouchcancel = no;
+  }
 }
 
+let no = function(event) {
+    event.preventDefault();
+    event.stopPropagation(); // not necessary in my case, could leave in case stopImmediateProp isn't available? 
+    event.stopImmediatePropagation();
+    return false;
+};
 
 // document.getElementById('yourElement').oncontextmenu = function(event) {
 //     event.preventDefault();
@@ -559,11 +567,47 @@ function preventLongPressMenu(nodes) {
 
 $(document).ready(function() {
 
-    window.oncontextmenu = function(event) {
-     event.preventDefault();
-     event.stopPropagation();
-     return false;
-    };  
+    // window.oncontextmenu = function(event) {
+    //  event.preventDefault();
+    //  event.stopPropagation();
+    //  return false;
+    // };  
+
+    function preventBehavior(e) {
+        console.log(e);
+        e.preventDefault(); 
+    };
+
+    // $('#fix').on('touchmove',function(e){
+    // if(!$('.scroll').has($(e.target)).length)
+    //     e.preventDefault();
+    // });
+
+    // $('body').delegate('#panel','touchmove',function(e){
+
+    //     preventBehavior();
+
+    // }).delegate('#map','touchmove',function(e){
+
+    //     e.stopPropagation();
+    //     return false;
+
+    // });
+
+
+    window.addEventListener("touchmove", preventBehavior, {passive: false});
+
+    // window.addEventListener('touchforcechange', function(event) {
+    //     var force = event.changedTouches[0].force;
+    //     var id = event.changedTouches[0].target.id;
+    //     console.log("force: " + force);
+    //     if ($('img') && force > 0.4) {
+    //         alert("force: " + force);
+    //         //event.preventDefault();
+    //         console.log('prevented 3D touch on element with id = ' + id);
+    //     }
+    // });
+
 
     opacitySlider = $("#opacity");
     overlaySlider = $("#overlayslider");
@@ -579,4 +623,14 @@ $(document).ready(function() {
         canMoveOverlay = false;
       }
   })
+
+    // document.addEventListener('touchmove', function(e){e.preventDefault()}, false);
+    overlaySlider.on('touchmove', function(e){e.stopPropagation()});
+    opacitySlider.on('touchmove', function(e){e.stopPropagation()});
+    // map.on('touchmove', function(e){e.stopPropagation()});
+    // addEventListener('touchmove', , false);
+    // opacitySlider.addEventListener('touchmove', function(e){e.stopPropagation()}, false);
+    
+
+
 });
