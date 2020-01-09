@@ -155,11 +155,17 @@ USGSOverlay.prototype.onAdd = function() {
     img.style.width = '100%';
     img.style.height = '100%';
     img.style.position = 'absolute';
-    div.appendChild(img);
+    
 
     preventLongPressMenu(div);
     preventLongPressMenu(document.querySelectorAll('body img'));
+    img.oncontextmenu = function(event) {
+         event.preventDefault();
+         event.stopPropagation();
+         return false;
+    };
 
+    div.appendChild(img);
 
     this.div_ = div;
     }
