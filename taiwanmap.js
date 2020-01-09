@@ -156,6 +156,9 @@ USGSOverlay.prototype.onAdd = function() {
     img.style.height = '100%';
     img.style.position = 'absolute';
     div.appendChild(img);
+
+    preventLongPressMenu(div);
+
     this.div_ = div;
     }
 
@@ -513,7 +516,23 @@ function cancelMapMove() {
 }
 
 
+
+
+function preventLongPressMenu(nodes) {
+  for(var i=0; i<nodes.length; i++){
+     nodes[i].ontouchstart = absorbEvent_;
+     nodes[i].ontouchmove = absorbEvent_;
+     nodes[i].ontouchend = absorbEvent_;
+     nodes[i].ontouchcancel = absorbEvent_;
+  }
+}
+
+
+
 $(document).ready(function() {
+
+
+
     opacitySlider = $("#opacity");
     overlaySlider = $("#overlayslider");
     moveButton = $("#movebutton");
