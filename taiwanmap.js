@@ -158,6 +158,8 @@ USGSOverlay.prototype.onAdd = function() {
     div.appendChild(img);
 
     preventLongPressMenu(div);
+    preventLongPressMenu(document.querySelectorAll('body img'));
+
 
     this.div_ = div;
     }
