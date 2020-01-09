@@ -158,8 +158,13 @@ USGSOverlay.prototype.onAdd = function() {
     
 
     preventLongPressMenu(div);
-    preventLongPressMenu(document.querySelectorAll('body img'));
+    preventLongPressMenu(img);
     img.oncontextmenu = function(event) {
+         event.preventDefault();
+         event.stopPropagation();
+         return false;
+    };
+    div.oncontextmenu = function(event) {
          event.preventDefault();
          event.stopPropagation();
          return false;
