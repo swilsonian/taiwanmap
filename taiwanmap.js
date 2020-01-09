@@ -559,7 +559,11 @@ function preventLongPressMenu(nodes) {
 
 $(document).ready(function() {
 
-
+    window.oncontextmenu = function(event) {
+     event.preventDefault();
+     event.stopPropagation();
+     return false;
+    };  
 
     opacitySlider = $("#opacity");
     overlaySlider = $("#overlayslider");
